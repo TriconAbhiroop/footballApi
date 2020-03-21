@@ -16,33 +16,35 @@ import com.sapient.footballApi.service.TeamServiceImpl;
 
 @RestController
 public class StandingController {
-	
+
 	@Autowired
 	CountryServiceImpl countryServiceImpl;
-	
+
 	@Autowired
 	LeagueServiceImpl leagueServiceImpl;
-	
+
 	@Autowired
 	TeamServiceImpl teamServiceImpl;
-	
+
 	@Autowired
 	StandingServiceImpl standingServiceImpl;
-	
-	
+
 	@RequestMapping(value = "/standings", method = RequestMethod.GET)
-	public UserResponse getWeatherByCity(@RequestParam("country_name") String country_name,@RequestParam("league_name") String league_name,@RequestParam("team_name") String team_name) {
-		
-		int countryId=countryServiceImpl.getCountryIdByName(country_name);
-		
-		int leagueId =leagueServiceImpl.getLeagueIdByName(league_name, countryId);
-		
-		TeamResponse team =teamServiceImpl.getTeamDetailsFromLeagueId(leagueId, team_name);
-		
-		StandingResponse standing=standingServiceImpl.getStandings(leagueId, team_name);
-		
-		UserResponse response = new UserResponse(countryId, country_name, leagueId, league_name, team.getTeamKey(), team_name, standing.getOverallLeaguePosition());
-		
+	public UserResponse getStandingsByParams(@RequestParam("country_name") String country_name,
+			@RequestParam("league_name") String league_name, @RequestParam("team_name") String team_name) {
+
+		int countryId = countryServiceImpl.getCountryIdByName(country_name);
+
+		int leagueId = leagueServiceImpl.getLeagueIdByName(league_name, countryId);
+
+		TeamResponse team = teamServiceImpl.getTeamDetailsFromLeagueId(leagueId, team_name);
+
+		StandingResponse standing = standingServiceImpl.getStandings(leagueId, team_name);
+
+		UserResponse response = new UserResponse().withCountryId(countryId).withCountryName(country_name)
+				.withLeagueId(leagueId).withLeagueName(league_name).withTeamId(team.getTeamKey())
+				.withTeamName(team.getTeamName()).withLeaguePos(standing.getOverallLeaguePosition());
+
 		return response;
 	}
 
