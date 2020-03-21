@@ -29,7 +29,7 @@ public class StandingController {
 	@Autowired
 	StandingServiceImpl standingServiceImpl;
 	
-	/* country name, league name and team name*/
+	
 	@RequestMapping(value = "/standings", method = RequestMethod.GET)
 	public UserResponse getWeatherByCity(@RequestParam("country_name") String country_name,@RequestParam("league_name") String league_name,@RequestParam("team_name") String team_name) {
 		
